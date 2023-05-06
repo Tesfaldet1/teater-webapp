@@ -20,19 +20,23 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
-    @CreationTimestamp
+    //@CreationTimestamp
    private LocalDateTime startDateTime;
    private LocalDateTime  endDateTime;
-   private String organizer;
+
    private String description;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-   private Calendar calendar;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "calendar_events",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "calendar_id")
+    )
+   private List<Calendar> calendars;
 
     @OneToMany(
-            mappedBy = "event", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+          cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH}
     )
-    private List<Member> members = new ArrayList<>();
+    private List<Member> attendees;
 
     public Event(String title, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.title = title;
@@ -41,20 +45,13 @@ public class Event {
         //this.members = new ArrayList<Member>();
     }
     public void addMember(Member member) {
-        members.add(member);
+        attendees.add(member);
     }
 
     public void removeMember(Member member) {
-        members.remove(member);
+        attendees.remove(member);
     }
-    public Member findMemberById(int id) {
-        for (Member member : members) {
-            if (member.getId() == id) {
-                return member;
-            }
-        }
-        return null;
-    }
+
 }
 
 

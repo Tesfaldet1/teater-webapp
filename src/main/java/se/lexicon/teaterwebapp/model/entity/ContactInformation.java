@@ -16,19 +16,15 @@ public class ContactInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String phone;
-    private String email;
-    private String address;
+    private String streetAddress;
     private String city;
     private String zipcode;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private User user;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private Staff staff;
 
-    public ContactInformation(String phone, String email) {
+    public ContactInformation(String phone, String streetAddress, String city) {
         this.phone = phone;
-        this.email = email;
+        this.streetAddress = streetAddress;
+        this.city = city;
     }
-
-
 }

@@ -3,10 +3,12 @@ package se.lexicon.teaterwebapp.service;
 import org.springframework.stereotype.Service;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.MemberDto;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberService {
     MemberDto findById(Integer id) throws DataNotFoundException;
@@ -21,5 +23,10 @@ public interface MemberService {
 
     void delete(Integer id) throws DataNotFoundException;
 
+    List<MemberDto> getMembersByLastName(String lastName);
+
+
 
 }
+
+

@@ -2,6 +2,7 @@ package se.lexicon.teaterwebapp.service;
 
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.StaffDto;
 
 import java.util.List;
@@ -21,3 +22,5 @@ public interface StaffService {
 
 
 }
+
+

@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import se.lexicon.teaterwebapp.model.Dto.UserDto;
 import se.lexicon.teaterwebapp.service.UserService;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     UserService userService;
@@ -32,4 +33,6 @@ public class UserController {
         userService.disableUserByUsername(username);
         return ResponseEntity.noContent().build();
     }
+
+
 }

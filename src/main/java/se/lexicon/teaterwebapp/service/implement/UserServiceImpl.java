@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
-import se.lexicon.teaterwebapp.model.Dto.RoleDto;
+
 import se.lexicon.teaterwebapp.model.Dto.UserDto;
 import se.lexicon.teaterwebapp.model.entity.User;
 import se.lexicon.teaterwebapp.repository.RoleRepository;
@@ -17,66 +17,71 @@ import java.util.HashMap;
 import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
-    RoleRepository roleRepository;
-    UserRepository userRepository;
-    ModelMapper modelMapper;
+
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public UserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, ModelMapper modelMapper) {
-        this.roleRepository = roleRepository;
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
+
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public UserDto register(UserDto dto) {
-        // step1: check the methods params
-        if (dto == null) throw new IllegalArgumentException("UserDto data was null");
-        if (dto.getUsername() == null || dto.getPassword() == null)
-            throw new IllegalArgumentException("username or password was null");
-        if (dto.getRoles() == null || dto.getRoles().size() == 0)
-            throw new IllegalArgumentException("role data was null");
+    public UserDto register(UserDto userDto) {
+        // Check for null userDto
+        if (userDto == null) throw new IllegalArgumentException("UserDto data was null");
 
-        // step2: check the roles data
-        for (RoleDto element : dto.getRoles())
-            roleRepository.findById(element.getId()).orElseThrow(() -> new DataNotFoundException("role id was not valid"));
+        // Check for null username or password
+        if (userDto.getUsername() == null || userDto.getPassword() == null)
+            throw new IllegalArgumentException("Username or password was null");
 
-        // step3: check the username that should not be duplicated
-        if (userRepository.existsByUsername(dto.getUsername()))
-            throw new DataDuplicateException("duplicate username error");
+        // Check for duplicate username
+        if (userRepository.existsByUsername(userDto.getUsername()))
+            throw new DataDuplicateException("Duplicate username error");
 
-        // step4: convert the dto to entity
-        User convertedToEntity = modelMapper.map(dto, User.class);
+        // Convert UserDto to User entity
+        User user = modelMapper.map(userDto, User.class);
 
-        // step5: execute the save method of UserRepository
-        User createdEntity = userRepository.save(convertedToEntity);
+        // Save User entity to database
+        User savedUser = userRepository.save(user);
 
-        // step6: convert the created entity to dto
-        UserDto convertedToDto = modelMapper.map(createdEntity, UserDto.class);
+        // Convert saved User entity to UserDto
+        UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
 
-        return convertedToDto;
+        return savedUserDto;
     }
 
     @Override
     public Map<String, Object> findByUsername(String username) {
+        // Check for null username
         if (username == null) throw new IllegalArgumentException("Username was null");
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("Username not found error"));
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", user.getUsername());
-        map.put("roles", user.getRoles());
-        map.put("expired", user.isExpired());
-        return map;
+        // Find User entity by username
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException("Username not found error"));
+
+        // Create a Map to store response
+        Map<String, Object> response = new HashMap<>();
+
+        // Add roles to the response
+        response.put("roles", user.getRoles());
+
+        return response;
     }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public void disableUserByUsername(String username) {
+        // Check for null username
         if (username == null) throw new IllegalArgumentException("Username was null");
-        if (!userRepository.existsByUsername(username)) throw new DataNotFoundException("username was not valid");
+
+        // Check if username exists in database
+        if (!userRepository.existsByUsername(username))
+            throw new DataNotFoundException("Username not found error");
+
+        // Update user's expired status
         userRepository.updateExpiredByUsername(username, true);
     }
-
-
-
 }

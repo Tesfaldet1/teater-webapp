@@ -21,24 +21,23 @@ public class Calendar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title")
-    private String title;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "start_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private LocalDateTime startTime;
-
-    @Column(name = "end_time", columnDefinition = "TIMESTAMP WITH TIME ZONE")
-    private LocalDateTime endTime;
-
-
-    @OneToMany(
-            mappedBy = "calendar", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH}
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "calendar_events",
+            joinColumns = @JoinColumn(name = "calendar_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
     )
     private List<Event> events;
+    private String calendarMode;
 
-
+    public Calendar(List<Event> events, String calendarMode) {
+        this.events = events;
+        this.calendarMode = calendarMode;
+    }
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+    public void removeEvent(Event event) {
+        events.remove(event);
+    }
 }

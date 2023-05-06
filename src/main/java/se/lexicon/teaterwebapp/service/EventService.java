@@ -2,6 +2,7 @@ package se.lexicon.teaterwebapp.service;
 
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.EventDto;
 
 import java.util.List;
@@ -17,3 +18,4 @@ public interface EventService {
 
     void delete(Long id) throws DataNotFoundException;
 }
+

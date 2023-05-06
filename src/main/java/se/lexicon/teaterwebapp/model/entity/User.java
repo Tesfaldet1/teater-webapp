@@ -19,49 +19,40 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
-    @Column(unique = true, nullable = false, length = 80)
     private String username;
-    @Column(nullable = false, length = 80)
-    private String password;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    private Account account;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
     private boolean expired;
-    @Column(unique = true, nullable = false, length = 30)
-    private String email;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
+
     @OneToMany(
             mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH}
     )
     private List<ContactInformation>contactInformationList;
 
-    @OneToMany(
-            mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-
-
-            CascadeType.REFRESH}
-    )
-    private Set<Role> roles = new HashSet<>();
-
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    public User(Account account, Set<Role> roles, List<ContactInformation> contactInformationList) {
+        this.account = account;
+        this.roles = roles;
+        this.contactInformationList = contactInformationList;
     }
 
-    public User(String email) {
-        this.email = email;
+    public User(Account account, Set<Role> roles) {
+        this.account = account;
+        this.roles = roles;
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(boolean expired, String username) {
-        this.expired = expired;
-        this.email = username;
-    }
     public  void addRole(Role role){
         if (roles.contains(role)) {
             throw new DataDuplicateException("the role already exist");

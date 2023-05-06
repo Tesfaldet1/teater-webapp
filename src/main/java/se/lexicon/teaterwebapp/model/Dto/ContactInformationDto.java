@@ -8,13 +8,12 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ContactInformationDto {
-    @NotEmpty
-    @Size(min = 4, max = 40)
+
     private Long id;
-    private String address;
+    private String streetAddress;
     private String phone;
-    private String email;
-    private UserDto user;
     private String city;
     private String zipcode;
 }
+
+

@@ -12,8 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.lexicon.teaterwebapp.model.entity.Member;
 import se.lexicon.teaterwebapp.model.entity.User;
-import se.lexicon.teaterwebapp.repository.MemberRepository;
-import se.lexicon.teaterwebapp.repository.UserRepository;
+//import se.lexicon.teaterwebapp.repository.MemberRepository;
+//import se.lexicon.teaterwebapp.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
