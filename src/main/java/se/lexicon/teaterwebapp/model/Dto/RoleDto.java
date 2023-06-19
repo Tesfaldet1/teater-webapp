@@ -13,4 +13,6 @@ public class RoleDto {
     private int id;
 
     private String name;
+    private Set<String> roles;
+
 }

@@ -7,14 +7,20 @@ import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
 
+import se.lexicon.teaterwebapp.model.Dto.StaffDto;
 import se.lexicon.teaterwebapp.model.Dto.UserDto;
+import se.lexicon.teaterwebapp.model.entity.Staff;
 import se.lexicon.teaterwebapp.model.entity.User;
 import se.lexicon.teaterwebapp.repository.RoleRepository;
 import se.lexicon.teaterwebapp.repository.UserRepository;
 import se.lexicon.teaterwebapp.service.UserService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -70,6 +76,12 @@ public class UserServiceImpl implements UserService {
 
         return response;
     }
+    @Override
+    public List<UserDto> findAll() {
+        List<User> list = new ArrayList<>();
+        userRepository.findAll().iterator().forEachRemaining(list::add);
+        return list.stream().map(category -> modelMapper.map(category, UserDto.class)).collect(Collectors.toList());
+    }
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -84,4 +96,20 @@ public class UserServiceImpl implements UserService {
         // Update user's expired status
         userRepository.updateExpiredByUsername(username, true);
     }
+    @Override
+    public List<UserDto> findByEmail(String email) throws DataNotFoundException {
+        if (email == null) {
+            throw new IllegalArgumentException("Email should not be null");
+        }
+        List<User> userList = userRepository.findByEmail(email);
+        if (userList.isEmpty()) {
+            throw new DataNotFoundException("No staff found with the provided email");
+        }
+        return userList.stream()
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toList());
+    }
 }
+
+
+

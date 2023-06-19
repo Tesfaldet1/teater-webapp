@@ -1,9 +1,7 @@
 package se.lexicon.teaterwebapp.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +9,8 @@ import java.util.Set;
 
 @Entity
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
@@ -34,5 +33,27 @@ public class Role {
 
 
 
+
+
+    public Role(RoleType name, List<Account> accounts) {
+        this.name = name;
+        this.accounts = accounts;
+    }
+
+
+    public Role(RoleType name) {
+        this.name = name;
+    }
+
+    public Role(List<Account> accounts, Set<User> users) {
+        this.accounts = accounts;
+        this.users = users;
+    }
+
+    public Role(RoleType name, List<Account> accounts, Set<User> users) {
+        this.name = name;
+        this.accounts = accounts;
+        this.users = users;
+    }
 }
 

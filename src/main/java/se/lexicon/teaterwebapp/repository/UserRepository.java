@@ -16,6 +16,7 @@ public interface UserRepository extends CrudRepository<User, String> {
     Optional<User> findByUsername(String username);
 
     boolean existsByUsername(String username);
+    List<User> findByEmail(String email);
 
    @Modifying
    @Query("update User u set u.expired= :expired where u.username = :username")
