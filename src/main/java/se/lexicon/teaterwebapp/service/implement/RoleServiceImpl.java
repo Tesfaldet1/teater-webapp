@@ -11,7 +11,7 @@ import se.lexicon.teaterwebapp.model.entity.Role;
 import se.lexicon.teaterwebapp.repository.RoleRepository;
 import se.lexicon.teaterwebapp.service.RoleService;
 
-import javax.swing.text.html.Option;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,7 +29,9 @@ public class RoleServiceImpl implements RoleService {
        /*return roleList.stream()
                .map(role -> new RoleDto(role.getId(), role.getName()))
                .collect(Collectors.toList());
+
         */
+
         return modelMapper.map(roleList, new TypeToken<List<RoleDto>>(){}.getType());
     }
 
@@ -77,3 +79,5 @@ public class RoleServiceImpl implements RoleService {
 
     }
 }
+
+

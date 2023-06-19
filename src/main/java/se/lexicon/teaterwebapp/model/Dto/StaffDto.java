@@ -9,9 +9,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Setter
 @Getter
 @ToString
+
 public class StaffDto {
     private Integer id;
     @JsonProperty("first_name")
@@ -23,9 +26,9 @@ public class StaffDto {
     @NotEmpty(message = "Email should not be empty")
     @Size(min = 2, max = 80, message = "Email length should be between 2-80")
 
-    private String email;
 
-    private String street;
-
-    private String city;
+    private UserDto user;
+    private List<EventDto> events;
 }
+
+

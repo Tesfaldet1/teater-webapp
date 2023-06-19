@@ -5,13 +5,14 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import se.lexicon.teaterwebapp.model.Dto.CalendarDto;
 import se.lexicon.teaterwebapp.service.CalendarService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/calendars")
+@RequestMapping("/api/calendars")
 public class CalendarController {
 
     private final CalendarService calendarService;
@@ -52,3 +53,4 @@ public class CalendarController {
     }
 
 }
+

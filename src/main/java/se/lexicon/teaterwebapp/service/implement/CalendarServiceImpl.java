@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.CalendarDto;
 import se.lexicon.teaterwebapp.model.entity.Calendar;
 import se.lexicon.teaterwebapp.repository.CalendarRepository;
@@ -36,7 +37,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public List<CalendarDto> findAll() {
-        List<Calendar> calendars = (List<Calendar>) calendarRepository.findAllByOrderByDateAsc();
+        List<Calendar> calendars = (List<Calendar>) calendarRepository.findAll();
         return calendars.stream()
                 .map(calendar -> modelMapper.map(calendar, CalendarDto.class))
                 .collect(Collectors.toList());
@@ -47,7 +48,7 @@ public class CalendarServiceImpl implements CalendarService {
     public CalendarDto create(CalendarDto calendarDto) throws DataDuplicateException, DataNotFoundException {
         if (calendarDto == null) throw new IllegalArgumentException("Calendar data should not be null");
         if (calendarDto.getId() != null) throw new IllegalArgumentException("id should be null");
-        if (calendarRepository.findByTitle(calendarDto.getTitle()).isPresent()) throw new DataDuplicateException("Title is duplicate");
+        if (calendarRepository.findById(calendarDto.getId()).isPresent()) throw new DataDuplicateException("Title is duplicate");
         Calendar calendar = modelMapper.map(calendarDto, Calendar.class);
         Calendar createdCalendar = calendarRepository.save(calendar);
 
@@ -72,4 +73,6 @@ public class CalendarServiceImpl implements CalendarService {
         calendarRepository.deleteById(id);
     }
 }
+
+
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.MemberDto;
 
 import se.lexicon.teaterwebapp.model.entity.Member;
@@ -14,13 +15,14 @@ import se.lexicon.teaterwebapp.repository.StaffRepository;
 import se.lexicon.teaterwebapp.service.MemberService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl implements MemberService {
-    ModelMapper mapper;
-    MemberRepository memberRepository;
+   private final ModelMapper mapper;
+   private final  MemberRepository memberRepository;
 
     public MemberServiceImpl(ModelMapper mapper, MemberRepository memberRepository) {
         this.mapper = mapper;
@@ -34,12 +36,14 @@ public class MemberServiceImpl implements MemberService {
         return mapper.map(result, MemberDto.class);
     }
     @Override
+    public List<MemberDto> getMembersByLastName(String lastName) {
+        if(lastName==null)throw new IllegalArgumentException("person last name is not be null");
+        List<Member> result  = memberRepository.findByLastName(lastName);
+        return Collections.singletonList(mapper.map(result, MemberDto.class));
 
-    public MemberDto findByEmail(String email) throws DataNotFoundException {
-        if (email == null) throw new IllegalArgumentException("Email should not be null");
-        Member result = memberRepository.findByEmail(email).orElseThrow(() -> new DataNotFoundException("Person not found"));
-        return mapper.map(result, MemberDto.class);
     }
+
+
     @Override
     public List<MemberDto> findAll() {
         List<Member> list = new ArrayList<>();
@@ -78,6 +82,14 @@ public class MemberServiceImpl implements MemberService {
         findById(id);
         memberRepository.deleteById(id);
     }
+    @Override
+    public MemberDto findByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("Member not found"));
+        return mapper.map(member, MemberDto.class);
+    }
 
 
 }
+
+

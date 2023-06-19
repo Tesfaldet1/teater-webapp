@@ -1,15 +1,18 @@
 package se.lexicon.teaterwebapp.model.Dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import se.lexicon.teaterwebapp.model.entity.RoleType;
 
+import java.util.List;
+import java.util.Set;
 @Getter
 @Setter
 
 public class RoleDto {
     private int id;
-    @NotEmpty(message = "name should not be empty")
-    @Size(min = 3, max = 30, message = "name length should be between 3 and 30")
+
     private String name;
+    private Set<String> roles;
+
 }

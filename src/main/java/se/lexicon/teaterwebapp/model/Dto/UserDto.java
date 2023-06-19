@@ -13,12 +13,15 @@ import java.util.List;
 @Setter
 
 public class UserDto {
-    @NotEmpty
-    @Size(min = 4, max = 40)
+
     private String username;
     @Size(min = 4, max = 40)
     private String password;
-    @NotNull
-    @Valid
-    private List<RoleDto> roles;
+    private AccountDto account;
+    private boolean expired;
+    private MemberDto member;
+    private StaffDto staff;
+    private List<ContactInformationDto> contactInformationList;
+
 }
+

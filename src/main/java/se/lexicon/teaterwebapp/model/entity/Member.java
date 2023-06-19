@@ -15,15 +15,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+@Data // Getter and Setter, EqualsAndHashCode and RequiredArgConstructor
 @NoArgsConstructor
 @AllArgsConstructor
-@Data // Getter and Setter, EqualsAndHashCode and RequiredArgConstructor
-
 @Entity
 public class Member {
     @Id
@@ -31,39 +31,28 @@ public class Member {
     private int id;
     private String firstName;
     private String lastName;
+    private LocalDate birthDate;
     @Column(unique = true, nullable = false, length = 30)
     private String email;
-    @Column(unique = true,  length = 80)
-    private String username;
-    @Column( length = 80)
-    private String password;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Event event;
 
-
-
-    public Member(String firstName, String lastName, String email) {
+    public Member(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.birthDate = birthDate;
+    }
+
+    public Member(String firstName, String lastName, LocalDate birthDate, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
         this.email = email;
     }
 
-    public Member(String firstName, String lastName, String email, String username, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-
-        this.username = username;
-        this.password = password;
-    }
-
-    public Member(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
     public List<String> getEmailList() {
         List<String> emailList = new ArrayList<>();
         emailList.add(email);

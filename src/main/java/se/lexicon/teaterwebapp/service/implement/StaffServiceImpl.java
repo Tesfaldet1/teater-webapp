@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
+
 import se.lexicon.teaterwebapp.model.Dto.StaffDto;
 import se.lexicon.teaterwebapp.model.entity.Staff;
 import se.lexicon.teaterwebapp.repository.StaffRepository;
@@ -49,7 +50,7 @@ public class StaffServiceImpl implements StaffService {
     public StaffDto create(StaffDto dto) throws DataDuplicateException, DataNotFoundException {
         if (dto == null) throw new IllegalArgumentException("Person data should not be null");
         if (dto.getId() != null) throw new IllegalArgumentException("id should be null");
-        if(staffRepository.findByEmail(dto.getEmail()).isPresent()) throw new DataDuplicateException("Email is duplicate");
+        if(staffRepository.findByEmail(dto.getLastName()).isPresent()) throw new DataDuplicateException("Email is duplicate");
         Staff entity = mapper.map(dto, Staff.class);
         Staff result = staffRepository.save(entity);
 
@@ -78,3 +79,5 @@ public class StaffServiceImpl implements StaffService {
     }
 
 }
+
+

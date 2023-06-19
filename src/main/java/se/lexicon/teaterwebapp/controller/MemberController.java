@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import se.lexicon.teaterwebapp.Exception.DataDuplicateException;
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
 
+
 import se.lexicon.teaterwebapp.model.Dto.MemberDto;
 import se.lexicon.teaterwebapp.service.MemberService;
 
@@ -45,5 +46,13 @@ public class MemberController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/{email}")
+    public ResponseEntity<MemberDto> findByEmail(@PathVariable String email) {
+        MemberDto dto = service.findByEmail(email);
+        return ResponseEntity.ok(dto);
+    }
+
 
 }
+
+

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.events.Event;
+
 import se.lexicon.teaterwebapp.Exception.DataNotFoundException;
 import se.lexicon.teaterwebapp.model.Dto.ContactInformationDto;
 import se.lexicon.teaterwebapp.model.entity.ContactInformation;
@@ -54,8 +55,8 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
         // Update ContactInformation entity with new data from ContactInformationDto
         existingContactInformation.setPhone(contactInformationDto.getPhone());
-        existingContactInformation.setEmail(contactInformationDto.getEmail());
-        existingContactInformation.setAddress(contactInformationDto.getAddress());
+
+        existingContactInformation.setStreetAddress(contactInformationDto.getStreetAddress());
         existingContactInformation.setCity(contactInformationDto.getCity());
         existingContactInformation.setZipcode(contactInformationDto.getZipcode());
 
@@ -66,8 +67,8 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("id", updatedContactInformation.getId());
         responseMap.put("phone", updatedContactInformation.getPhone());
-        responseMap.put("email", updatedContactInformation.getEmail());
-        responseMap.put("address", updatedContactInformation.getAddress());
+
+        responseMap.put("address", updatedContactInformation.getStreetAddress());
         responseMap.put("city", updatedContactInformation.getCity());
         responseMap.put("zipcode", updatedContactInformation.getZipcode());
 
@@ -92,5 +93,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         contactInformationRepository.deleteById(id);
     }
 }
+
+
 
 

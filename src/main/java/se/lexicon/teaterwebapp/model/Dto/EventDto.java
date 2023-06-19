@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,5 +28,8 @@ public class EventDto {
 
     private LocalDateTime endTime;
 
-    private boolean isActive;
+    private ContactInformationDto contactInformationDto;
+    private List<MemberDto> members;
 }
+
+
