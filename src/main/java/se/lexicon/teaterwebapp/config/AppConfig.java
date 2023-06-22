@@ -17,16 +17,5 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-   /* @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests()
-                .requestMatchers("/calendar","/Member","/user").authenticated()
-                .requestMatchers("/myEvent").permitAll()
-                .and().formLogin()
-                .and().httpBasic();
-        return http.build();
-        }
-
-    */
 }
